@@ -1,11 +1,11 @@
-<div class=" d-flex flex-column m-5 justify-content-center align-items-center" style="height: 100vh;">
-  <div class="alert alert-dark  col-sm-12 col-md-3 col-lg-3">
+<div>
+  <div class="alert alert-dark m-2 col-sm-12 col-md-12 col-lg-3" [formGroup]='calcForm'>
     <div class="row">
       <div class="display col-md-12">
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Display</span>
-          <input type="text" class="form-control" placeholder="Enter expression here" [(ngModel)]="display" name="display"
-            aria-label="Answer" aria-describedby="basic-addon1">
+          <input type="text" class="form-control" placeholder="Enter expression here" formControlName="display"
+            name="display" (keyup.enter)="getOperator('=')" aria-label="Answer" aria-describedby="basic-addon1">
         </div>
         <div class="alert alert-danger" *ngIf="errMessageMode">{{errMsg}}</div>
       </div>
@@ -13,20 +13,20 @@
     <div class="row">
       <div class="col-6">
         <div class="row">
-          <div *ngFor="let operand of [9,8,7,6,5,4,3,2,1,0]" [ngClass]="{'col-12': operand===0,'col-4':operand!=0}"
-            class='d-grid gap-2'>
-            <span class="btn  btn-primary my-1" (click)="getOperand(operand)">
-              {{operand}}
+          <div formArrayName="operands" *ngFor="let operand of operands.controls; let i=index"
+            [ngClass]="{'col-12': operand.value.value===0,'col-4':operand.value.value!=0}" class='d-grid gap-2'>
+            <span class="btn  btn-primary my-1" (click)="getOperand(operand.value.value)" [formGroupName]="i">
+              {{operand.value.value}}
             </span>
           </div>
         </div>
       </div>
       <div class="col-6">
         <div class="row">
-          <div *ngFor="let operator of ['.','C','+','-','/','*','=']"
-            [ngClass]="{'col-12': operator==='=','col-6':operator!='='}" class='d-grid gap-2'>
-            <span class="btn  btn-secondary my-1" (click)="getOperator(operator)">
-              {{operator}}
+          <div formArrayName="operators" *ngFor="let operator of operators.controls;let i=index"
+            [ngClass]="{'col-12': operator.value.operator==='=','col-6':operator.value.operator!='='}" class='d-grid gap-2'>
+            <span class="btn  btn-secondary my-1" (click)="getOperator(operator.value.operator)" [formGroupName]="i">
+              {{operator.value.operator}}
             </span>
           </div>
         </div>
