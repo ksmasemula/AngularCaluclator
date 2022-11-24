@@ -1,53 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'NgCalculator';
+export class AppComponent  {
+  title = 'KsCalculator';
 
-  public display: string = '';
-  public errMessageMode: boolean = false;
-  public errMsg: string = '';
-
-  public calculate(): void {
-    try {
-      let result = eval(this.display);
-
-      if (isNaN(result) || result.toString() === 'Infinity') {
-        this.errMsg = 'Invalid operation occured';
-        this.errMessageMode = true;
-        return;
-      }
-
-      this.display = result.toString();
-      return;
-    } catch (error: any) {
-      this.errMsg = error.message;
-      this.errMessageMode = true;
-      return;
-    }
-  }
-
-  public getOperand(operand: number): void {
-    this.display += operand.toString();
-  }
-
-  public getOperator(operator: string): void {
-    this.errMessageMode = false;
-
-    if (operator === 'C') {
-      this.display = '';
-      return;
-    }
-
-    if (operator === '=') {
-      this.calculate();
-      return;
-    }
-
-    this.display += operator;
-  }
 }
