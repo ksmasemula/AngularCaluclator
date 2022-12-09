@@ -14,9 +14,9 @@
       <div class="col-6">
         <div class="row">
           <div formArrayName="operands" *ngFor="let operand of operands.controls; let i=index"
-            [ngClass]="{'col-12': operand.value.value===0,'col-4':operand.value.value!=0}" class='d-grid gap-2'>
-            <span class="btn  btn-primary my-1" (click)="getOperand(operand.value.value)" [formGroupName]="i">
-              {{operand.value.value}}
+            [ngClass]="setBtnStyle(operand.value.button)" class='d-grid gap-2'>
+            <span class="btn  btn-primary my-1" (click)="getOperand(operand.value.button)" [formGroupName]="i">
+              {{operand.value.button}}
             </span>
           </div>
         </div>
@@ -24,9 +24,9 @@
       <div class="col-6">
         <div class="row">
           <div formArrayName="operators" *ngFor="let operator of operators.controls;let i=index"
-            [ngClass]="{'col-12': operator.value.operator==='=','col-6':operator.value.operator!='='}" class='d-grid gap-2'>
-            <span class="btn  btn-secondary my-1" (click)="getOperator(operator.value.operator)" [formGroupName]="i">
-              {{operator.value.operator}}
+            [ngClass]="setBtnStyle(operator.value.button)" class='d-grid gap-2'>
+            <span class="btn  btn-secondary my-1" (click)="getOperator(operator.value.button)" [formGroupName]="i">
+              {{operator.value.button}}
             </span>
           </div>
         </div>

@@ -7,7 +7,6 @@ import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
   styleUrls: ['./reactive-version.component.scss']
 })
 export class ReactiveVersionComponent implements OnInit {
-
   public calcForm!: FormGroup;
   public operandList: number[] = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
   public operatorList: string[] = ['.', 'C', '+', '-', '/', '*', '='];
@@ -21,27 +20,23 @@ export class ReactiveVersionComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.buildOperands();
-    this.buildOperators();
+    this.buildBtns(this.operandList, this.operandFrmGrps);
+    this.buildBtns(this.operatorList, this.operatorFrmGrps);
+
     this.calcForm = this.fb.group({
       display: '',
       operands: this.fb.array(this.operandFrmGrps),
       operators: this.fb.array(this.operatorFrmGrps)
     });
-
-    console.log(this.calcForm);
   }
 
-  buildOperands() {
-    this.operandList.forEach((operand) => {
-      this.operandFrmGrps.push(this.fb.group({ value: operand }));
-    });
+  setBtnStyle(value: number | string): string[] {
+    if (value === 0 || value === '=') return ['col-12'];
+    return typeof value == 'string' ? ['col-6'] : ['col-4'];
   }
 
-  buildOperators() {
-    this.operatorList.forEach((operator) => {
-      this.operatorFrmGrps.push(this.fb.group({ operator: operator }));
-    });
+  buildBtns(btnList: any[], btnFrmGrps: any) {
+    btnList.forEach(btnVal => btnFrmGrps.push(this.fb.group({ button: btnVal })));
   }
 
   get operands(): FormArray {
@@ -67,7 +62,6 @@ export class ReactiveVersionComponent implements OnInit {
     } catch (error: any) {
       this.errMsg = error.message;
       this.errMessageMode = true;
-      return;
     }
   }
 
@@ -78,17 +72,16 @@ export class ReactiveVersionComponent implements OnInit {
   public getOperator(operator: string): void {
     this.errMessageMode = false;
 
-    if (operator === 'C') {
-      this.calcForm.patchValue({ display: '' });
-      return;
+    switch (operator) {
+      case 'C':
+        this.calcForm.patchValue({ display: '' });
+        break;
+      case '=':
+        this.calculate();
+        break;
+      default:
+        this.calcForm.patchValue({ display: this.calcForm.get('display')?.value + operator.toString() });
+        break;
     }
-
-    if (operator === '=') {
-      this.calculate();
-      return;
-    }
-
-    this.calcForm.patchValue({ display: this.calcForm.get('display')?.value + operator.toString() });
   }
-
 }
