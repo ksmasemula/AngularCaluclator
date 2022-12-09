@@ -35,7 +35,7 @@ export class ReactiveVersionComponent implements OnInit {
     return typeof value == 'string' ? ['col-6'] : ['col-4'];
   }
 
-  buildBtns(btnList: any[], btnFrmGrps: any) {
+  buildBtns(btnList: number[] | string[], btnFrmGrps: FormGroup[]) {
     btnList.forEach(btnVal => btnFrmGrps.push(this.fb.group({ button: btnVal })));
   }
 
